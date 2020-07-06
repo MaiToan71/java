@@ -1,0 +1,103 @@
+package DemoDBSJ;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
+
+/**
+ *
+ * @author  admin
+ */
+public class frmSubject extends javax.swing.JFrame {
+
+    Connection conn;
+    String operation;
+
+    /** Creates new form frmSubject */
+    public frmSubject() {
+        initComponents();
+        operation = "edit";
+        try {
+            //Load Driver
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            String url = "jdbc:sqlserver://MRSON:1433;databaseName=DBSJ";
+            //OPen Connection
+            conn = DriverManager.getConnection(url, "sa", "ap123");
+//            if(conn!=null)
+//            {
+//                JOptionPane.showMessageDialog(null, "Ket noi thanh cong");
+//            }
+            Statement st = conn.createStatement();
+            String sql = "Select * from  Subjects";
+            ResultSet rsSubject = st.executeQuery(sql);
+            DefaultListModel model = new DefaultListModel();
+            while (rsSubject.next()) {
+                String subjectName = rsSubject.getString("SubjectName");
+                model.addElement(subjectName);
+            }
+            lstSubject.setModel(model);
+            rsSubject.close();
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }    
+private void btnAddNewActionPerformed(java.awt.event.ActionEvent evt) {
+// TODO add your handling code here:
+    txtSubjectID.setText("");
+    txtSubjectName.setText("");
+    txtSubjectID.requestFocus();
+    operation = "add";
+}
+
+private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {
+// TODO add your handling code here:
+    String subjectID = txtSubjectID.getText();
+    String subjectName = txtSubjectName.getText();
+    try {
+        PreparedStatement pst = conn.prepareStatement("Insert into Subjects Values(?,?)");
+        pst.setString(1, subjectID);
+        pst.setString(2, subjectName);
+        int result = pst.executeUpdate();
+        if (result > 0) {
+            JOptionPane.showMessageDialog(null, "Them thanh cong", "Thong bao", JOptionPane.INFORMATION_MESSAGE);
+        }
+    } catch (SQLException ex) {
+        ex.printStackTrace();
+    }
+}
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String args[]) {
+        java.awt.EventQueue.invokeLater(new Runnable() {
+
+            public void run() {
+                new frmSubject().setVisible(true);
+            }
+        });
+    }
+
+    // Variables declaration - do not modify
+    private javax.swing.JButton btnAddNew;
+    private javax.swing.JButton btnDelete;
+    private javax.swing.JButton btnEdit;
+    private javax.swing.JButton btnExit;
+    private javax.swing.JButton btnUpdate;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JList lstSubject;
+    private javax.swing.JTextField txtSubjectID;
+    private javax.swing.JTextField txtSubjectName;
+    // End of variables declaration
+}

@@ -1,0 +1,39 @@
+package Bai1;
+
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Scanner;
+
+public class Chay {
+    public static void main(String[] args){
+        try {
+            Scanner inputN = new Scanner(System.in);
+            FileWriter myWriter = new FileWriter("C:\\Users\\maito\\OneDrive\\Desktop\\test\\book.txt");
+            ArrayList<Nhap> list = new ArrayList<>();
+            Nhap nhap ;
+            System.out.println("Nhập số lượng sách :");
+            int n;
+            n = inputN.nextInt();
+            for(int i=0; i< n; i++){
+                nhap = new Nhap();
+                nhap.input();
+                list.add(nhap);
+            }
+            for(Nhap str : list) {
+               // myWriter.write(list.get(i).getCode());
+               myWriter.write("Code: "+str.getCode()+"\n"+
+                        "Title: "+  str.getTitle()+ "\n"+
+                        "Author: "+str.getAuthor()+"\n"+
+                        "Price: "+str.getPrice()+"\n"+
+                        "----------------- \n");
+
+            }
+            myWriter.close();
+
+        }catch (IOException E){
+            E.printStackTrace();
+        }
+
+    }
+}

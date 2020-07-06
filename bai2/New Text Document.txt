@@ -1,0 +1,28 @@
+package Bai2;
+
+import java.util.HashMap;
+import java.util.Scanner;
+
+public class HienThi {
+    public static void main(String[] args){
+        HashMap<String,String> hm = new HashMap<>();
+        String name;
+        String phone;
+        String dung="000";
+        Scanner input = new Scanner(System.in);
+        while (true){
+            System.out.println("Name: ");
+            name = input.nextLine();
+            System.out.println("Phone: ");
+            phone = input.nextLine();
+            hm.put(name,phone);
+            if(phone.equals(dung)){
+                break;
+            }
+        }
+        for (String i: hm.keySet()){
+            System.out.println("Name is "+i+" and Phone is "+hm.get(i));
+        }
+
+    }
+}
